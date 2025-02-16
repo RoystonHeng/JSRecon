@@ -1,22 +1,28 @@
 {% extends "base.html" %}{% block title %}Home{% endblock %}
 {% block content %}
-{% if current_user.is_admin%}
+{% if current_user.is_admin %}
         <p>You are logged in as an admin.</p>
     {% elif current_user.is_admin == False %}
         <p>You are logged in as a regular user.</p>
-    {% else %}
-        <p>failed</p>
 {% endif %}
 <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}
   <li class="list-group-item">
+    <button type="button" class="btn" onClick="deleteNote2({{ note.id }}, {{ note.user_id }}, currentUserId, isAdmin)">
+      <span aria-hidden="true">&times;</span>
+    </button>
     {{ note.data }}
     <button type="button" class="close" onClick="deleteNote({{ note.id }})">
       <span aria-hidden="true">&times;</span>
     </button>
   </li>
   {% endfor %}
+  {% if current_user.is_admin %}
+  <button type="button" class="btn btn-warning" onClick="addProduct({{ 'true' if current_user.is_admin else 'false' }})">
+    Add Product
+  </button>
+    {% endif %}
 </ul>
 <form method="POST">
     <textarea name="note" id="note" class="form-control"></textarea>
@@ -24,5 +30,15 @@
     <div align="center">
       <button type="submit" class="btn btn-primary">Add Note</button>
     </div>
-  </form>
+</form>
+<button type="button" class="btn btn-warning" onClick="addProduct2({{ 'true' if current_user.is_admin else 'false' }})">
+  Add Product 2
+</button>
+
+  <script>
+    // Inject User ID and Admin Status into JavaScript Variables
+    var currentUserId = {{ current_user.id }};
+    var isAdmin = {{ "true" if current_user.is_admin else "false" }};
+
+</script>
 {% endblock %}

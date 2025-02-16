@@ -33,3 +33,51 @@ def delete_note():
             db.session.commit()
 
     return jsonify({})
+
+@views.route("/delete-note2", methods=["POST"])
+def delete_note2():
+    try:
+        note_data = json.loads(request.data)
+        note_id = note_data.get("noteId")
+
+        # Validate note ID
+        if not isinstance(note_id, int):
+            return jsonify({"success": False, "message": "Invalid note ID."})
+
+        # Fetch the note from the database
+        note = Note.query.get(note_id)
+
+        if note:
+            # Validate ownership or admin access
+            if note.user_id == current_user.id or current_user.is_admin:
+                db.session.delete(note)
+                db.session.commit()
+                return jsonify({"success": True, "message": "Note deleted successfully."})
+            else:
+                return jsonify({"success": False, "message": "Unauthorized: You cannot delete this note."})
+
+        return jsonify({"success": False, "message": "Note not found."})
+
+    except Exception as e:
+        return jsonify({"success": False, "message": f"An error occurred: {str(e)}"})
+    
+
+@views.route('/add-product', methods=['POST'])
+def add_product():
+    data = json.loads(request.data)
+    isAdmin = data.get('isAdmin', False)  # Safely get value
+
+    print("Admin Status:", isAdmin)  # Debugging
+
+    if isAdmin:
+        return jsonify({"success": True, "message": "Product added successfully."})
+    
+@views.route('/add-product2', methods=['POST'])
+def add_product2():
+    data = json.loads(request.data)
+    isAdmin = data.get('isAdmin', False)  # Safely get value
+
+    print("Admin Status:", isAdmin)  # Debugging
+
+    if isAdmin:
+        return jsonify({"success": True, "message": "Product added successfully."})
