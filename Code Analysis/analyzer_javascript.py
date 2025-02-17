@@ -26,28 +26,35 @@ def analyze_code(code_snippet):
     }
 
     try:
-        # Parse JavaScript using PyJsParser
+        # ✅ Parse JavaScript code into AST using PyJsParser
         tree = pyjsparser.parse(code_snippet)
-        
+
         for node in tree['body']:
+            # ✅ Detect IfStatements with `currentUser.isAdmin`
             if node['type'] == 'IfStatement':
-                test_code = code_snippet[node['test']['range'][0]:node['test']['range'][1]]
-                if "currentUser.isAdmin" in test_code or "user.isAdmin" in test_code:
-                    features["NeedAdminApproval"] = 1
-                    features["AreYouAdmin"] = 1
-            
-            if node['type'] == 'ExpressionStatement' and 'expression' in node:
-                expression = node['expression']
-                left_range = expression.get('left', {}).get('range', [None, None])
-                right_range = expression.get('right', {}).get('range', [None, None])
+                test_expr = node.get('test', {})  # Safely get condition
+                if test_expr.get('type') == 'MemberExpression':
+                    object_name = test_expr['object'].get('name', '')
+                    property_name = test_expr['property'].get('name', '')
 
-                left = code_snippet[left_range[0]:left_range[1]] if None not in left_range else ""
-                right = code_snippet[right_range[0]:right_range[1]] if None not in right_range else ""
+                    if f"{object_name}.{property_name}" == "currentUser.isAdmin" or f"{object_name}.{property_name}" == "user.isAdmin":
+                        features["NeedAdminApproval"] = 1
+                        features["AreYouAdmin"] = 1
 
-                
-                if "note.userId" in left and "currentUser.id" in right:
-                    features["ValidateAgainstUser"] = 1
-    
+            # ✅ Detect user ownership validation (e.g., `if (note.userId == currentUser.id)`)
+            if node['type'] == 'IfStatement' and node['test']['type'] == 'BinaryExpression':
+                left = node['test']['left']
+                right = node['test']['right']
+
+                if left['type'] == 'MemberExpression' and right['type'] == 'MemberExpression':
+                    left_obj = left['object']['name']
+                    left_prop = left['property']['name']
+                    right_obj = right['object']['name']
+                    right_prop = right['property']['name']
+
+                    if f"{left_obj}.{left_prop}" == "note.userId" and f"{right_obj}.{right_prop}" == "currentUser.id":
+                        features["ValidateAgainstUser"] = 1
+
     except Exception as e:
         print(f"Error parsing JavaScript code: {e}")
 
