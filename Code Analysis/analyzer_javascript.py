@@ -1,6 +1,7 @@
 import pyjsparser
 import pandas as pd
 import csv
+import os
 
 def read_file(file_path):
     try:
@@ -36,8 +37,13 @@ def analyze_code(code_snippet):
                     features["AreYouAdmin"] = 1
             
             if node['type'] == 'ExpressionStatement' and 'expression' in node:
-                left = code_snippet[node['expression']['left']['range'][0]:node['expression']['left']['range'][1]]
-                right = code_snippet[node['expression']['right']['range'][0]:node['expression']['right']['range'][1]]
+                expression = node['expression']
+                left_range = expression.get('left', {}).get('range', [None, None])
+                right_range = expression.get('right', {}).get('range', [None, None])
+
+                left = code_snippet[left_range[0]:left_range[1]] if None not in left_range else ""
+                right = code_snippet[right_range[0]:right_range[1]] if None not in right_range else ""
+
                 
                 if "note.userId" in left and "currentUser.id" in right:
                     features["ValidateAgainstUser"] = 1
@@ -49,11 +55,24 @@ def analyze_code(code_snippet):
 
 if __name__ == "__main__":
     code_file_path = input("Enter file of code to test: ")
+    
+    # Check if test.csv exists, and delete it if it does
+    csv_filename = "test.csv"
+    if os.path.exists(csv_filename):
+        os.remove(csv_filename)
+        print(f"Deleted old {csv_filename}")
+        
     features = read_file(code_file_path)
 
     if features:
         csv_filename = "test.csv"
-        fieldnames = ["NeedAdminApproval", "AreYouAdmin", "CreatedByUser", "ValidateAgainstUser"]
+        fieldnames = ["NeedAdminApproval", 
+                      "AreYouAdmin", 
+                      "CreatedByUser", 
+                      "ValidateAgainstUser",
+                      "ValidateAgainstAdmin",
+                      "IsItSecure"
+                      ]
         
         df = pd.DataFrame([features])
         with open(csv_filename, 'w', newline='') as csvfile:
