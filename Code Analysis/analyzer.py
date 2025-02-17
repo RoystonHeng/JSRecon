@@ -19,11 +19,9 @@ def read_file(file_path):
 def analyze_code(code_snippet):
     features = {
         "NeedAdminApproval": 0,
-        "CreatedByUser": 0,
         "AreYouAdmin": 0,
+        "CreatedByUser": 0,
         "ValidateAgainstUser": 0,
-        "ValidateAgainstAdmin": 0,
-        "IsItSecure": 0  # Default to insecure
     }
 
     tree = ast.parse(code_snippet)
@@ -32,7 +30,7 @@ def analyze_code(code_snippet):
         # Detect role-based access control (RBAC)
         if isinstance(node, ast.If):
             test_code = ast.unparse(node.test)
-            if "{% if current_user.is_admin%}" in test_code:
+            if "if current_user.is_admin" in test_code:
                 features["NeedAdminApproval"] = 1
             if "current_user.is_admin" in test_code:
                 features["AreYouAdmin"] = 1
@@ -42,6 +40,7 @@ def analyze_code(code_snippet):
             left = ast.unparse(node.left)
             if "note.user_id" in left and "current_user.id" in ast.unparse(node.comparators[0]):
                 features["ValidateAgainstUser"] = 1
+                features["CreatedByUser"] = 1
 
     return features
 
@@ -49,10 +48,12 @@ code_file_path = input("Enter file of code to test: ")
 features = read_file(code_file_path)
 if features:
     csv_filename = "test.csv"
+    fieldnames = ["NeedAdminApproval", "AreYouAdmin", "CreatedByUser", "ValidateAgainstUser"]
+
     # Convert to DataFrame and Save to CSV
     df = pd.DataFrame([features])
     with open(csv_filename, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile)
-        writer.writerows(features)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writerow(features)
     
     print(f"{csv_filename} has been created")
