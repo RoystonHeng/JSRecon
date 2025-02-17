@@ -47,12 +47,15 @@ def analyze_code(code_snippet):
 
 code_file_path = input("Enter file of code to test: ")
 features = read_file(code_file_path)
+
 if features:
     csv_filename = "test.csv"
+    fieldnames = ["NeedAdminApproval", "AreYouAdmin", "CreatedByUser", "ValidateAgainstUser"]
+
     # Convert to DataFrame and Save to CSV
     df = pd.DataFrame([features])
     with open(csv_filename, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile)
-        writer.writerows(features)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writerow(features)
     
     print(f"{csv_filename} has been created")
