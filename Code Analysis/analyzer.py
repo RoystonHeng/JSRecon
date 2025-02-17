@@ -46,6 +46,7 @@ def analyze_code(code_snippet):
 
 code_file_path = input("Enter file of code to test: ")
 features = read_file(code_file_path)
+
 if features:
     csv_filename = "test.csv"
     fieldnames = ["NeedAdminApproval", "AreYouAdmin", "CreatedByUser", "ValidateAgainstUser"]

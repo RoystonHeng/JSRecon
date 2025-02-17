@@ -11,3 +11,4 @@ Pillow~=10.0.0
 utils~=1.0.2
 esprima~=4.0.1
 escodegen~=1.0.11
+pyjsparser~=2.7.1
