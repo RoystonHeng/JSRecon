@@ -24,29 +24,24 @@ def analyze_code(code_snippet):
     }
 
     try:
-        # Parse JavaScript code into AST using PyJsParser
+        # ✅ Parse JavaScript code into AST using PyJsParser
         tree = pyjsparser.parse(code_snippet)
 
         for node in tree['body']:
-            # Detect IfStatements for `isAdmin` checks
+            # ✅ Detect IfStatements for `isAdmin`
             if node['type'] == 'IfStatement':
-                test_expr = node.get('test', {})  # Get the condition
+                test_expr = node.get('test', {})
 
-                # Check if test_expr is a variable check like "if (!isAdmin)"
-                if test_expr.get('type') == 'UnaryExpression' and test_expr.get('argument', {}).get('name') == "isAdmin":
+                # Check if `isAdmin:` is anywhere in the IfStatement condition
+                if "isAdmin" in str(test_expr):
                     features["NeedAdminApproval"] = 1
                     features["AreYouAdmin"] = 1
 
-                # Check if test_expr is a direct check "if (isAdmin)"
-                if test_expr.get('type') == 'Identifier' and test_expr.get('name') == "isAdmin":
-                    features["NeedAdminApproval"] = 1
-                    features["AreYouAdmin"] = 1
-
-            # Detect user ownership validation (`if (userId !== currentUserId)`)
+            # ✅ Detect user ownership validation (`if (userId !== currentUserId)`)
             if node['type'] == 'IfStatement' and node['test']['type'] == 'BinaryExpression':
                 left = node['test']['left']
                 right = node['test']['right']
-                operator = node['test']['operator']  # Could be `!==` or `===`
+                operator = node['test']['operator']
 
                 if left['type'] == 'Identifier' and right['type'] == 'Identifier':
                     if left['name'] == "userId" and right['name'] == "currentUserId" and operator in ["!==", "==="]:
