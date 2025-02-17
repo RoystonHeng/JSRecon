@@ -1,6 +1,7 @@
 import pyjsparser
 import pandas as pd
 import csv
+import os
 
 def read_file(file_path):
     try:
@@ -54,6 +55,13 @@ def analyze_code(code_snippet):
 
 if __name__ == "__main__":
     code_file_path = input("Enter file of code to test: ")
+    
+    # Check if test.csv exists, and delete it if it does
+    csv_filename = "test.csv"
+    if os.path.exists(csv_filename):
+        os.remove(csv_filename)
+        print(f"Deleted old {csv_filename}")
+        
     features = read_file(code_file_path)
 
     if features:
