@@ -29,6 +29,20 @@ def traverse_ast(node, features):
                 features["NeedAdminApproval"] = 1
                 features["AreYouAdmin"] = 1
 
+        #✅ Detect `if (!noteId || typeof noteId !== "number")`
+        if node.get('type') == 'IfStatement' and 'test' in node:
+            test = node['test']
+
+            # ✅ Check for `!noteId` (UnaryExpression)
+            if test.get('type') == 'LogicalExpression' and test.get('operator') == '||':
+                left_expr = test.get('left', {})
+                right_expr = test.get('right', {})
+
+                # ✅ Left side: `!noteId`
+                if left_expr.get('type') == 'UnaryExpression' and left_expr.get('operator') == '!' and left_expr['argument'].get('name') == "noteId":
+                    features["CreatedByUser"] = 1
+                    print("✅ Detected `!noteId` check, marking CreatedByUser = 1")
+
         # ✅ Detect user validation `if (userId !== currentUserId)`
         if node.get('type') == 'IfStatement' and node.get('test', {}).get('type') == 'BinaryExpression':
             left = node['test']['left']
