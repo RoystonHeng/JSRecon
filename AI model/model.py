@@ -17,7 +17,7 @@ splits = []
 # random_states = [42, 21, 84, 99]
 random_states = [random.randint(1, 100) for _ in range(4)]
 for state in random_states:
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=state)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=state,shuffle=True)
     splits.append((X_train, X_test, y_train, y_test))
 
 best_accuracy = 0
