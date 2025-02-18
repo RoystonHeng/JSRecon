@@ -22,28 +22,27 @@ def traverse_ast(node, features):
     Recursively traverse the AST to find relevant features.
     """
     if isinstance(node, dict):  # If it's a dictionary (AST node)
-        # ✅ Detect `isAdmin:` in IfStatements
+        #Detect `isAdmin:` in IfStatements
         if node.get('type') == 'IfStatement' and 'test' in node:
             test_expr = str(node['test'])  # Convert to string for detection
             if "isAdmin" in test_expr:
                 features["NeedAdminApproval"] = 1
                 features["AreYouAdmin"] = 1
 
-        #✅ Detect `if (!noteId || typeof noteId !== "number")`
+        #Detect `if (!noteId || typeof noteId !== "number")`
         if node.get('type') == 'IfStatement' and 'test' in node:
             test = node['test']
 
-            # ✅ Check for `!noteId` (UnaryExpression)
+            #Check for `!noteId` (UnaryExpression)
             if test.get('type') == 'LogicalExpression' and test.get('operator') == '||':
                 left_expr = test.get('left', {})
                 right_expr = test.get('right', {})
 
-                # ✅ Left side: `!noteId`
+                #Left side: `!noteId`
                 if left_expr.get('type') == 'UnaryExpression' and left_expr.get('operator') == '!' and left_expr['argument'].get('name') == "noteId":
                     features["CreatedByUser"] = 1
-                    print("✅ Detected `!noteId` check, marking CreatedByUser = 1")
 
-        # ✅ Detect user validation `if (userId !== currentUserId)`
+        #Detect user validation `if (userId !== currentUserId)`
         if node.get('type') == 'IfStatement' and node.get('test', {}).get('type') == 'BinaryExpression':
             left = node['test']['left']
             right = node['test']['right']
@@ -53,26 +52,25 @@ def traverse_ast(node, features):
                 if left['name'] == "userId" and right['name'] == "currentUserId" and operator in ["!==", "==="]:
                     features["ValidateAgainstUser"] = 1
 
-        # ✅ Detect `fetch()` calls inside function bodies
+        #Detect `fetch()` calls inside function bodies
         if node.get('type') == 'FunctionDeclaration' and 'body' in node:
             traverse_ast(node['body'], features)
 
-        # ✅ Detect `ObjectExpression` properties (e.g., body: JSON.stringify({ isAdmin: isAdmin }))
+        #Detect `ObjectExpression` properties (e.g., body: JSON.stringify({ isAdmin: isAdmin }))
         if node.get('type') == 'Property' and 'value' in node:
             value = node['value']
             if value.get('type') == 'CallExpression' and 'callee' in value:
                 callee = value['callee']
 
-                # ✅ Look for JSON.stringify()
+                #Look for JSON.stringify()
                 if callee.get('type') == 'MemberExpression' and callee['object'].get('name') == "JSON" and callee['property'].get('name') == "stringify":
-                    # ✅ Check the first argument of JSON.stringify (must be an object)
+                    #Check the first argument of JSON.stringify (must be an object)
                     if value['arguments'] and value['arguments'][0].get('type') == 'ObjectExpression':
                         for prop in value['arguments'][0]['properties']:
                             if prop['key']['name'] == "isAdmin":
-                                print("✅ Detected isAdmin inside JSON.stringify!")
-                                features["AreYouAdmin"] = 1  # ✅ Mark AreYouAdmin = 1
+                                features["AreYouAdmin"] = 1 
 
-        # ✅ Recursively search inside child nodes
+        #Recursively search inside child nodes
         for key, value in node.items():
             traverse_ast(value, features)
 
@@ -89,14 +87,12 @@ def analyze_code(code_snippet):
     }
 
     try:
-        # ✅ Parse JavaScript code into AST using PyJsParser
+        #Parse JavaScript code into AST using PyJsParser
         tree = pyjsparser.parse(code_snippet)
 
-        # ✅ Print AST for debugging
-        #print("DEBUG: AST Output:")
-        #print(tree)
 
-        # ✅ Recursively search the AST
+
+        #Recursively search the AST
         traverse_ast(tree, features)
 
     except Exception as e:
