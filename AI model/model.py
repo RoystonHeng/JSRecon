@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, classification_report
+import random
 
 file_path = "dataset.csv"  # Update with the correct path
 
@@ -13,7 +14,8 @@ X = df.drop(columns=['IsItSecure'])
 y = df['IsItSecure']
 
 splits = []
-random_states = [42, 21, 84, 99]
+# random_states = [42, 21, 84, 99]
+random_states = [random.randint(1, 100) for _ in range(4)]
 for state in random_states:
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=state)
     splits.append((X_train, X_test, y_train, y_test))
