@@ -1,4 +1,4 @@
-test = [0,0,0,0]
+test = [0,0,1,1]
 
 IsVisibleOnlyToAdmin , ValidateIsAdmin ,ItemCreatedByUserFucntion, ValidateIsUser , *discard = test
 
