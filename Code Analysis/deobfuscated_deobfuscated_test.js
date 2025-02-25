@@ -1,77 +1,53 @@
-function _18082(_5031145, _2005625) {
-    var _3388903 = _13237();
-    return _18082 = function(_4629037, _5179626) {
-        _4629037 = _4629037 - 317;
-        var _7991355 = _3388903[_4629037];
-        return _7991355;
-    }, _18082(_5031145, _2005625);
-}
-(function(_4745189, _2673390) {
-    var _3598641 = _18082,
-        _5455428 = _4745189();
+(function(_0x17cfe3, _0x335a63) {
+    var _0x3aa63b = _0x1b7a,
+        _0x53a0b8 = _0x17cfe3();
     while (!![]) {
         try {
-            var _5539900 = parseInt(_3598641(331)) / 1 + parseInt(_3598641(321)) / 2 + parseInt(_3598641(317)) / 3 + -parseInt(_3598641(327)) / 4 * (-parseInt(_3598641(330)) / 5) + -parseInt(_3598641(338)) / 6 * (parseInt(_3598641(337)) / 7) + parseInt(_3598641(332)) / 8 + -parseInt(_3598641(326)) / 9;
-            if (_5539900 === _2673390)
-                break;
-            else
-                _5455428.push(_5455428.shift());
-        } catch (_2755668) {
-            _5455428.push(_5455428.shift());
+            var _0x3daf75 = -parseInt(_0x3aa63b(0xa2)) / 0x1 + -parseInt(_0x3aa63b(0x9f)) / 0x2 + parseInt(_0x3aa63b(0x98)) / 0x3 * (-parseInt(_0x3aa63b(0x9a)) / 0x4) + -parseInt(_0x3aa63b(0x9c)) / 0x5 * (parseInt(_0x3aa63b(0xa8)) / 0x6) + -parseInt(_0x3aa63b(0xa5)) / 0x7 + parseInt(_0x3aa63b(0x9b)) / 0x8 + -parseInt(_0x3aa63b(0xa4)) / 0x9 * (-parseInt(_0x3aa63b(0x97)) / 0xa);
+            if (_0x3daf75 === _0x335a63) break;
+            else _0x53a0b8.push(_0x53a0b8.shift());
+        } catch (_0x1ab59d) {
+            _0x53a0b8.push(_0x53a0b8.shift());
         }
     }
-}(_13237, 262029));
+}(_0x3546, 0xc0744));
 
-function addProduct2(_5195720) {
-    var _1305865 = _18082;
-    if (!_5195720) {
-        alert(_1305865(318));
-        return;
-    }
-    alert(_1305865(333)), fetch('/add-product', {
-        'method': _1305865(328),
-        'headers': {
-            'Content-Type': _1305865(322)
-        },
-        'body': JSON[_1305865(336)]({
-            'isAdmin': _5195720
-        })
-    })[_1305865(319)](_3448547 => _3448547[_1305865(329)]())[_1305865(319)](_5833992 => {
-        var _9031396 = _1305865;
-        alert(_5833992.message), _5833992[_9031396(334)] && (window[_9031396(323)][_9031396(325)] = '/');
-    })[_1305865(335)](_2804929 => {
-        var _15224275 = _1305865;
-        console[_15224275(320)](_15224275(324), _2804929);
-    });
+function _0x1b7a(_0x489412, _0x2e496a) {
+    var _0x354678 = _0x3546();
+    return _0x1b7a = function(_0x1b7a84, _0x3bf341) {
+        _0x1b7a84 = _0x1b7a84 - 0x93;
+        var _0x47a27e = _0x354678[_0x1b7a84];
+        return _0x47a27e;
+    }, _0x1b7a(_0x489412, _0x2e496a);
 }
 
-function _13237() {
-    var _4155694 = [
-        '193362NjJVkh',
-        '420066tawPmm',
-        'You do not have permission to add a product.',
-        'then',
-        'error',
-        '2858PbCXcd',
-        'application/json',
-        'location',
-        'Error:',
-        'href',
-        '3817386mxnuQQ',
-        '167044duJcCo',
-        'POST',
-        'json',
-        '40kALZlm',
-        '170908rMLhcJ',
-        '3669496IEoRuM',
-        'Adding product...',
-        'success',
-        'catch',
-        'stringify',
-        '91sKnfaI'
-    ];
-    _13237 = function() {
-        return _4155694;
+function _0x3546() {
+    var _0x28d63d = ['827541fSlcmD', 'success', '4853106OlsFIL', '4011693uQdXon', 'location', 'href', '552FdSrTb', 'error', 'then', 'stringify', 'catch', '70ddVpqw', '91311yXioMj', 'Adding product...', '100LDGRBY', '6412640Oosfys', '22765nqxeZg', 'Error:', '/add-product', '2414970XYinkS', 'POST', 'You do not have permission to add a product.'];
+    _0x3546 = function() {
+        return _0x28d63d;
     };
-    return _13237();
+    return _0x3546();
+}
+
+function addProduct2(_0x3ab3e0) {
+    var _0x55d617 = _0x1b7a;
+    if (!_0x3ab3e0) {
+        alert(_0x55d617(0xa1));
+        return;
+    }
+    alert(_0x55d617(0x99)), fetch(_0x55d617(0x9e), {
+        'method': _0x55d617(0xa0),
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+        'body': JSON[_0x55d617(0x95)]({
+            'isAdmin': _0x3ab3e0
+        })
+    })['then'](_0x3dccac => _0x3dccac.json())[_0x55d617(0x94)](_0x5e08ea => {
+        var _0x294995 = _0x55d617;
+        alert(_0x5e08ea.message), _0x5e08ea[_0x294995(0xa3)] && (window[_0x294995(0xa6)][_0x294995(0xa7)] = '/');
+    })[_0x55d617(0x96)](_0x2fd5c5 => {
+        var _0x30e8f2 = _0x55d617;
+        console[_0x30e8f2(0x93)](_0x30e8f2(0x9d), _0x2fd5c5);
+    });
 }
