@@ -1,8 +1,0 @@
-IsItSecure =0
-if adminonlyfunction == 1 and validateisadmin == 0:
-    IsItSecure = 3
-if adminonlyfunction == 0 and validateisadmin == 1:
-    IsItSecure = 2
-if ItemCreatedByUserFucntion == 1 and ValidateAgainstUser == 0:
-    IsItSecure = 1
-
