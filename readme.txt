@@ -8,3 +8,6 @@ Steps to run JSRecon:
 6) Wait for JSRecon to generate the deobfuscated_<filename>.js, deobfuscated_<filename>_predicted.js and ai_security_report.docx
 
 old_code folder contains code that was either prototypes or failed versions of current code
+
+main.py can be used to run the flask app (python main.py)
+Flask app was used to create webpages that uses JavaScript to test if the JavaScript is working
