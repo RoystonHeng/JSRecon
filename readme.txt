@@ -6,3 +6,5 @@ Steps to run JSRecon:
 4) run JSRecon.py with python ./JSRecon.py
 5) JSRecon will ask for a file name containing the obfuscated code. E.g test.js
 6) Wait for JSRecon to generate the deobfuscated_<filename>.js, deobfuscated_<filename>_predicted.js and ai_security_report.docx
+
+old_code folder contains code that was either prototypes or failed versions of current code
