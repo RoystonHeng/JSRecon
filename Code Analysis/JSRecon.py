@@ -136,7 +136,7 @@ def generate_gpt_report(analysis, file_path):
         "4. Sanitize user-generated content to prevent XSS attacks.\n"
     )
 
-    report_filename = f"ai_security_report.docx"
+    report_filename = f"{file_path}_security_report.docx"
     document.save(report_filename)
     print(f"📝 Security analysis report generated: {report_filename}")
 
@@ -156,7 +156,7 @@ def full_pipeline(input_file):
     analysis = analyze_code_with_gpt(code)
 
     # Step 4: Generate report
-    generate_gpt_report(analysis, predicted_file)
+    generate_gpt_report(analysis, Path(deobfuscated_file))
 
 # === Main Execution ===
 if __name__ == "__main__":
