@@ -15,8 +15,6 @@ def read_file(file_path):
         print(f"Error: {e}")
         return None
 
-import pyjsparser
-
 def traverse_ast(node, features):
     """
     Recursively traverse the AST to find relevant features.
